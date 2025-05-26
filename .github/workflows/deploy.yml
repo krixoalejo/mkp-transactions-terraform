@@ -30,9 +30,6 @@ jobs:
         workload_identity_provider: ${{ secrets.GCP_WI_PROVIDER }}
         service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-    - name: 'Crear archivo de credenciales'
-      run: echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > credentials.json
-
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
