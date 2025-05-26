@@ -30,12 +30,15 @@ jobs:
         workload_identity_provider: ${{ secrets.GCP_WI_PROVIDER }}
         service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-    - name: Verificar autenticación exitosa
+    - name: Verify gcloud authentication and get access token
       run: |
+        echo "--- gcloud auth list ---"
         gcloud auth list
+        echo "--- gcloud config list ---"
         gcloud config list
-        gcloud iam service-accounts get-access-token ${{ secrets.GCP_SERVICE_ACCOUNT }} --lifetime=30s
-        echo "Verificación de autenticación completa."
+        echo "--- Attempting to get access token for service account ---"
+        gcloud auth print-access-token --impersonate-service-account="${{ env.SERVICE_ACCOUNT_EMAIL }}"
+        echo "--- Authentication check complete. ---"
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
